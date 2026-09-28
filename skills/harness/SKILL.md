@@ -4,7 +4,7 @@ description: 프로젝트 하네스(AI가 일하는 환경) 점검·설치. 새 
 argument-hint: [check = 점검만 | 비우면 점검 후 설치]
 ---
 
-# /harness — 프로젝트 하네스 점검·설치 (v0.8)
+# /harness — 프로젝트 하네스 점검·설치 (v0.9)
 
 목적: AI(관리자·작업자·밤모드)가 사람 없이 일해도 결과를 **기계적으로 검증**하고, **길을 잃지 않게** 하는 최소 환경을 갖춘다.
 원칙: 혼자 하는 작은 프로젝트 기준의 **가벼운 하네스**만. 전용 린트 규칙·아키텍처 계층 강제 같은 무거운 장치는 만들지 않는다.
@@ -71,7 +71,7 @@ argument-hint: [check = 점검만 | 비우면 점검 후 설치]
 - 실패하면 0이 아닌 종료 코드: 각 줄 끝에 `|| exit /b 1`.
 - 테스트가 아직 없으면 빌드·정적 분석까지만 넣고 `REM TODO: add tests`.
 
-스택별 기본 명령:
+스택별 기본 명령 (아래 6갈래는 실측까지 끝낸 **검증된 빠른 경로**. 이 표에 스택이 없으면 바로 다음 항목의 일반 규칙을 따른다):
 
 | 스택 | verify.cmd 본문 |
 |---|---|
@@ -82,6 +82,8 @@ argument-hint: [check = 점검만 | 비우면 점검 후 설치]
 | 정적 웹 (html/js만) | 자동 검사 없음 → `echo NO AUTOMATED CHECKS - verify in browser` 후 `exit /b 0`, 보고서에 "브라우저 확인 필요"로 표시 |
 | Unity / Godot / 기타 엔진 | 만들지 않고 "수동 확인 필요"로 보고 (Godot 표지: `project.godot`, Unity 표지: `ProjectSettings/`) |
 | 하위 프로젝트 여러 개 | 루트 verify.cmd가 각 하위로 `pushd`/`popd` 하며 차례로 실행 |
+
+**위 표에 없는 스택 — 매니페스트 감지 후 판단**: 위 6갈래는 예시일 뿐 전체 목록이 아니다. 표에 없는 언어/생태계(Rust, Go, Java/Maven·Gradle-JVM, Ruby, PHP, .NET 등)를 만나면, 그 생태계의 표지 파일(`Cargo.toml`, `go.mod`, `pom.xml`/`build.gradle`(JVM), `Gemfile`, `composer.json`, `*.csproj` 등)로 스택을 식별하고 **그 생태계에서 관용적으로 쓰이는 빌드·테스트 명령**(예: `cargo build`+`cargo test`, `go build ./...`+`go test ./...`, `mvn -q test`, `bundle exec rspec`, `composer install --dry-run`+`phpunit`, `dotnet build`+`dotnet test`)을 verify.cmd에 넣는다. 표의 6갈래와 같은 원칙을 반드시 지킨다: 실패 시 0이 아닌 종료 코드(`|| exit /b 1`), 준비물 미설치는 3(실패 아님), ASCII만, `call`로 감싸기. **만들고 나서 최소 1회 실제로 실행**해 종료 코드가 의도대로 0/1/3을 구분하는지 확인한 뒤에만 확정한다 — 확인 없이 짐작만으로 내놓지 않는다. 어느 생태계인지 특정할 표지 파일조차 없으면 Unity/Godot과 같은 방식으로 "수동 확인 필요"로 보고한다.
 
 Android·Flutter는 Gradle이 쓸 자바를 Android Studio와 맞춘다 (PATH의 다른 자바 버전 때문에 빌드가 깨지는 것 방지). verify.cmd·smoke.cmd의 `@echo off` 다음 줄:
 ```bat
