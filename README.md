@@ -1,7 +1,14 @@
 # claude-code-harness
 
-Claude Code용 `/harness` 스킬 — AI(관리자·작업자·자동화 모드)가 사람 없이 일해도 결과를
-**기계적으로 검증**할 수 있게, 프로젝트에 최소한의 검증 환경을 점검·자동 구축한다.
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+![Platform: Windows](https://img.shields.io/badge/platform-Windows-0078D6)
+
+Claude Code용 `/harness` 스킬 — AI(관리자·작업자·자동화 모드)가 사람 없이 일해도 "됐다"는
+말을 **종료 코드로** 증명하게 만드는, 프로젝트당 5분짜리 최소 검증 환경이다.
+
+AI 코딩 에이전트가 스스로 "완료했다"고 보고하는 것과, 실제로 빌드·테스트가 통과하는 것 사이엔
+간극이 있다. `/harness`는 그 간극을 사람이 매번 확인하지 않아도 되게, `.claude/verify.cmd` 하나로
+좁힌다. 없으면 만들고, 있으면 그대로 실행해서 결과만 보고한다.
 
 혼자 하는 작은 프로젝트 기준의 가벼운 하네스만 지향한다. 전용 린트 규칙이나 아키텍처 계층
 강제 같은 무거운 장치는 만들지 않는다.
