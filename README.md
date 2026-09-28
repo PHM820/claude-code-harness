@@ -24,6 +24,11 @@ cp -r claude-code-harness/skills/harness ~/.claude/skills/harness
 
 설치 후 Claude Code에서 `/harness` (점검 후 자동 설치) 또는 `/harness check` (점검만) 실행.
 
+**반드시 위 경로(`~/.claude/skills/harness/`)에 폴더 이름을 `harness` 그대로 설치해야 한다.**
+스모크 스크립트를 부르는 절대경로(`%USERPROFILE%\.claude\skills\harness\smoke\...`)가
+`SKILL.md`에 하드코딩돼 있어, 다른 이름이나 경로로 설치하면 스모크 테스트가 스크립트를 찾지
+못한다.
+
 ## 요구사항
 
 - **Windows 전용이다.** `verify.cmd`/`smoke.cmd`는 Windows 배치 파일이고, 스모크 스크립트는 PowerShell로 작성돼 있다. macOS/Linux 지원은 없다.
